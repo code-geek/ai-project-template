@@ -35,25 +35,34 @@ Enhancement suggestions are tracked as GitHub issues. Create an issue and provid
    cd ai-project-template
    ```
 
-2. Create a branch:
+2. Install pre-commit hooks:
+
+   ```bash
+   uv tool install pre-commit
+   pre-commit install
+   ```
+
+3. Create a branch:
 
    ```bash
    git checkout -b feature/your-feature-name
    ```
 
-3. Make your changes and test:
+4. Make your changes and test:
 
    ```bash
    ./scripts/run-tests.sh
    ```
 
-4. Commit your changes:
+5. Commit your changes (pre-commit hooks will run automatically):
 
    ```bash
    git commit -m "Add your descriptive commit message"
    ```
 
-5. Push to your fork:
+   If any hooks fail, fix the issues and commit again.
+
+6. Push to your fork:
 
    ```bash
    git push origin feature/your-feature-name
@@ -61,17 +70,20 @@ Enhancement suggestions are tracked as GitHub issues. Create an issue and provid
 
 ## Style Guidelines
 
-### Python Code Style
+### Code Quality
 
-- Follow PEP 8
-- Use type hints
-- Run `ruff` for linting
+All code is automatically checked by pre-commit hooks:
 
-### JavaScript/TypeScript Code Style
+- **Python**: Ruff for linting/formatting, mypy for type checking
+- **JavaScript/TypeScript**: Biome for linting/formatting
+- **Security**: Automatic secret detection
+- **General**: YAML/JSON validation, trailing whitespace removal
 
-- Use ESLint and Prettier
-- Follow the existing patterns in the codebase
-- Use TypeScript strictly
+Run hooks manually with:
+
+```bash
+pre-commit run --all-files
+```
 
 ### Commit Messages
 

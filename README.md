@@ -165,6 +165,31 @@ cp .env.example .env.local       # Configure environment
 npm run dev                      # Start dev server (localhost:3000)
 ```
 
+### Code Quality & Pre-commit Hooks
+
+This template includes comprehensive pre-commit hooks for maintaining code quality:
+
+```bash
+# Install pre-commit hooks (one-time setup)
+uv tool install pre-commit
+pre-commit install
+
+# Run hooks manually
+pre-commit run --all-files
+
+# Skip specific hooks if needed (e.g., Docker when daemon not running)
+SKIP=hadolint-docker git commit -m "your message"
+```
+
+**Included hooks:**
+
+- **Python**: Ruff (linting/formatting), mypy (type checking), django-upgrade
+- **Frontend**: Biome (fast ESLint + Prettier replacement), TypeScript checking
+- **Security**: Secret detection, security patterns
+- **General**: YAML/JSON validation, trailing whitespace, file endings
+- **Documentation**: Markdownlint
+- **Docker**: Hadolint (requires Docker daemon)
+
 ### Running Tests
 
 ```bash

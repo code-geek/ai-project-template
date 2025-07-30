@@ -50,7 +50,22 @@ docker-compose up
 # - Redis: localhost:6379
 ```
 
-### 4. Manual Setup (Alternative)
+### 4. Install Pre-commit Hooks
+
+```bash
+# Install pre-commit
+uv tool install pre-commit
+
+# Install git hooks
+pre-commit install
+
+# Test hooks are working
+pre-commit run --all-files
+```
+
+See [Pre-commit Guide](./PRE_COMMIT_GUIDE.md) for detailed information.
+
+### 5. Manual Setup (Alternative)
 
 #### Backend
 
