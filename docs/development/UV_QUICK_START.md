@@ -13,16 +13,19 @@
 ## Installation
 
 ### macOS/Linux
+
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
 ### Windows
+
 ```powershell
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
 ### With Homebrew
+
 ```bash
 brew install uv
 ```
@@ -209,10 +212,10 @@ git commit -m "Add django-cors-headers"
 # GitHub Actions example
 - name: Install uv
   uses: astral-sh/setup-uv@v4
-  
+
 - name: Install dependencies
   run: uv sync
-  
+
 - name: Run tests
   run: uv run pytest
 ```
@@ -221,20 +224,25 @@ git commit -m "Add django-cors-headers"
 
 1. **Use `uv sync` not `uv pip install`** for better performance
 2. **Enable pre-commit-uv** for faster git hooks:
+
    ```bash
    uv tool install pre-commit --with pre-commit-uv
    ```
+
 3. **Cache in CI**: UV caches packages globally, speeding up CI builds
 
 ## Troubleshooting
 
 ### "Command not found: uv"
+
 Add UV to your PATH:
+
 ```bash
 export PATH="$HOME/.local/bin:$PATH"
 ```
 
 ### Python version issues
+
 ```bash
 # Install required Python version
 uv python install 3.12
@@ -244,6 +252,7 @@ uv python pin 3.12
 ```
 
 ### Dependency conflicts
+
 ```bash
 # See why a package is included
 uv tree
@@ -255,12 +264,14 @@ uv sync --reinstall
 ## Migrating from pip/poetry
 
 ### From pip
+
 ```bash
 # Convert requirements.txt to pyproject.toml
 uv add $(cat requirements.txt)
 ```
 
 ### From poetry
+
 ```bash
 # UV reads pyproject.toml directly
 uv sync

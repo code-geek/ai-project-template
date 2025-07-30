@@ -29,27 +29,32 @@ Enhancement suggestions are tracked as GitHub issues. Create an issue and provid
 ## Development Process
 
 1. Clone your fork:
+
    ```bash
    git clone https://github.com/YOUR_USERNAME/ai-project-template.git
    cd ai-project-template
    ```
 
 2. Create a branch:
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
 
 3. Make your changes and test:
+
    ```bash
    ./scripts/run-tests.sh
    ```
 
 4. Commit your changes:
+
    ```bash
    git commit -m "Add your descriptive commit message"
    ```
 
 5. Push to your fork:
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -57,16 +62,19 @@ Enhancement suggestions are tracked as GitHub issues. Create an issue and provid
 ## Style Guidelines
 
 ### Python Code Style
+
 - Follow PEP 8
 - Use type hints
 - Run `ruff` for linting
 
 ### JavaScript/TypeScript Code Style
+
 - Use ESLint and Prettier
 - Follow the existing patterns in the codebase
 - Use TypeScript strictly
 
 ### Commit Messages
+
 - Use the present tense ("Add feature" not "Added feature")
 - Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
 - Limit the first line to 72 characters or less
@@ -74,6 +82,7 @@ Enhancement suggestions are tracked as GitHub issues. Create an issue and provid
 ## Claude Code Agents
 
 When contributing new agents:
+
 1. Place them in `.claude/agents/`
 2. Use YAML frontmatter with name, description, and tools
 3. Focus on a specific expertise area

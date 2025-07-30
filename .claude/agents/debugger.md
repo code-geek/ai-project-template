@@ -19,6 +19,7 @@ You are an expert debugging specialist. Your role is to quickly identify root ca
 ### Backend (Django) Errors
 
 #### 1. Database Errors
+
 ```python
 # Error: django.db.utils.IntegrityError: NOT NULL constraint failed
 # Cause: Required field is missing
@@ -27,15 +28,16 @@ You are an expert debugging specialist. Your role is to quickly identify root ca
 class Item(models.Model):
     # Bad
     name = models.CharField(max_length=255)
-    
+
     # Good - with default
     name = models.CharField(max_length=255, default='')
-    
+
     # Good - nullable
     description = models.TextField(null=True, blank=True)
 ```
 
 #### 2. Import Errors
+
 ```python
 # Error: ImportError: cannot import name 'ItemService' from 'apps.items.services'
 # Debug steps:
@@ -51,6 +53,7 @@ class Item(models.Model):
 ```
 
 #### 3. Django Ninja API Errors
+
 ```python
 # Error: ninja.errors.ValidationError
 # Debug approach:
@@ -59,7 +62,7 @@ def create_item(request, data: ItemSchema):
     # Add debugging
     print(f"Received data: {data}")
     print(f"Data dict: {data.dict()}")
-    
+
     try:
         item = Item.objects.create(**data.dict())
     except Exception as e:
@@ -71,6 +74,7 @@ def create_item(request, data: ItemSchema):
 ### Frontend (Next.js) Errors
 
 #### 1. Hydration Errors
+
 ```tsx
 // Error: Hydration failed because initial UI does not match
 // Common causes and fixes:
@@ -83,11 +87,11 @@ function BadComponent() {
 // Good - Use useEffect for client-only content
 function GoodComponent() {
   const [date, setDate] = useState<string>('')
-  
+
   useEffect(() => {
     setDate(new Date().toLocaleString())
   }, [])
-  
+
   return <div>{date}</div>
 }
 
@@ -98,6 +102,7 @@ function TimeComponent() {
 ```
 
 #### 2. TypeScript Errors
+
 ```typescript
 // Error: Type 'string | undefined' is not assignable to type 'string'
 
@@ -119,6 +124,7 @@ function TimeComponent() {
 ```
 
 #### 3. API Integration Errors
+
 ```typescript
 // Error: Failed to fetch
 // Debugging checklist:
@@ -135,13 +141,13 @@ try {
   const response = await fetch(url)
   console.log('Response status:', response.status)
   console.log('Response headers:', response.headers)
-  
+
   if (!response.ok) {
     const text = await response.text()
     console.error('Response body:', text)
     throw new Error(`HTTP ${response.status}: ${text}`)
   }
-  
+
   return response.json()
 } catch (error) {
   console.error('Fetch error:', error)
@@ -153,6 +159,7 @@ try {
 ## Debugging Tools & Commands
 
 ### Backend Debugging
+
 ```bash
 # Django shell for testing
 python manage.py shell
@@ -172,6 +179,7 @@ import pdb; pdb.set_trace()
 ```
 
 ### Frontend Debugging
+
 ```typescript
 // Browser DevTools commands
 // Console: Log component props
@@ -195,6 +203,7 @@ NEXT_PUBLIC_DEBUG=true npm run dev
 ## Systematic Debugging Process
 
 ### 1. Gather Information
+
 ```markdown
 ## Error Report
 - **Error Message**: [exact error]
@@ -205,6 +214,7 @@ NEXT_PUBLIC_DEBUG=true npm run dev
 ```
 
 ### 2. Reproduce the Issue
+
 ```bash
 # Create minimal reproduction
 1. Start with fresh data
@@ -214,6 +224,7 @@ NEXT_PUBLIC_DEBUG=true npm run dev
 ```
 
 ### 3. Isolate the Problem
+
 ```python
 # Add strategic logging
 import logging
@@ -221,16 +232,16 @@ logger = logging.getLogger(__name__)
 
 def problematic_function(data):
     logger.info(f"Input data: {data}")
-    
+
     try:
         # Step 1
         result1 = step1(data)
         logger.info(f"Step 1 result: {result1}")
-        
+
         # Step 2
         result2 = step2(result1)
         logger.info(f"Step 2 result: {result2}")
-        
+
         return result2
     except Exception as e:
         logger.error(f"Error in problematic_function: {e}", exc_info=True)
@@ -238,6 +249,7 @@ def problematic_function(data):
 ```
 
 ### 4. Fix and Test
+
 ```python
 # Write test first
 def test_problematic_function_with_edge_case():
@@ -254,11 +266,12 @@ def test_problematic_function_with_edge_case():
 ## Common Solutions
 
 ### Memory Leaks
+
 ```typescript
 // Frontend - Clean up effects
 useEffect(() => {
   const timer = setInterval(() => {}, 1000)
-  
+
   return () => clearInterval(timer) // Cleanup!
 }, [])
 
@@ -270,11 +283,12 @@ with closing(connection.cursor()) as cursor:
 ```
 
 ### Race Conditions
+
 ```typescript
 // Use AbortController for fetch
 useEffect(() => {
   const controller = new AbortController()
-  
+
   fetch(url, { signal: controller.signal })
     .then(res => res.json())
     .then(data => {
@@ -282,12 +296,13 @@ useEffect(() => {
         setData(data)
       }
     })
-  
+
   return () => controller.abort()
 }, [url])
 ```
 
 ### Performance Issues
+
 ```python
 # Backend - Use select_related/prefetch_related
 # Profile with django-debug-toolbar

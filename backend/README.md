@@ -21,7 +21,7 @@ uv run python manage.py createsuperuser
 uv run python manage.py runserver
 ```
 
-API will be available at http://localhost:8000/api/docs
+API will be available at <http://localhost:8000/api/docs>
 
 ## Development
 
@@ -66,7 +66,7 @@ uv run python manage.py flush
 
 ## Project Structure
 
-```
+```plaintext
 apps/
 ├── core/          # Shared utilities and base classes
 ├── users/         # User management and authentication
@@ -80,15 +80,16 @@ apps/
 
 ## API Documentation
 
-- Swagger UI: http://localhost:8000/api/docs
-- ReDoc: http://localhost:8000/api/redoc
-- OpenAPI Schema: http://localhost:8000/api/openapi.json
+- Swagger UI: <http://localhost:8000/api/docs>
+- ReDoc: <http://localhost:8000/api/redoc>
+- OpenAPI Schema: <http://localhost:8000/api/openapi.json>
 
 ## Environment Variables
 
 See `.env.example` for required environment variables.
 
 Key variables:
+
 - `DEBUG`: Set to False in production
 - `SECRET_KEY`: Django secret key
 - `DATABASE_URL`: PostgreSQL connection string
@@ -98,6 +99,7 @@ Key variables:
 ## Adding New Features
 
 1. Create new app:
+
    ```bash
    cd apps
    mkdir new_feature

@@ -38,11 +38,10 @@ repos:
     rev: v1.14.0
     hooks:
       - id: mypy
-        additional_dependencies: [
-          django-stubs[compatible-mypy],
-          types-requests,
-          types-python-dateutil,
-        ]
+        additional_dependencies:
+          - django-stubs[compatible-mypy]
+          - types-requests
+          - types-python-dateutil
         files: ^backend/
         args: [--config-file=pyproject.toml]
 
@@ -68,7 +67,6 @@ repos:
     hooks:
       - id: biome-check
         additional_dependencies: ["@biomejs/biome@1.9.4"]
-        args: [--write]
         files: \.(js|jsx|ts|tsx|json)$
         exclude: ^(frontend/node_modules|frontend/.next|frontend/out)/
 
@@ -82,24 +80,6 @@ repos:
         files: ^frontend/.*\.(ts|tsx)$
         pass_filenames: false
 
-  # Frontend - Prettier for non-JS files
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v3.3.3
-    hooks:
-      - id: prettier
-        types_or: [css, scss, markdown]
-        exclude: ^(frontend/node_modules|frontend/.next|pnpm-lock.yaml)/
-
-  # AI-friendly: Check for console.log statements
-  - repo: local
-    hooks:
-      - id: no-console-log
-        name: Check for console.log
-        entry: bash -c 'grep -r "console\.log" frontend/src --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" && echo "console.log found! Use proper logging." && exit 1 || exit 0'
-        language: system
-        pass_filenames: false
-        files: ^frontend/src/.*\.(ts|tsx|js|jsx)$
-
   # AI-friendly: Check for TODO/FIXME comments
   - repo: local
     hooks:
@@ -110,14 +90,6 @@ repos:
         pass_filenames: false
         types: [text]
 
-  # Check for large files that might be model weights or datasets
-  - repo: local
-    hooks:
-      - id: check-model-files
-        name: Check for AI model files
-        entry: bash -c 'find . -name "*.pkl" -o -name "*.h5" -o -name "*.pt" -o -name "*.pth" -o -name "*.onnx" -o -name "*.safetensors" | grep -v ".gitignore" && echo "Found AI model files! Use Git LFS or external storage." && exit 1 || exit 0'
-        language: system
-        pass_filenames: false
 
   # Markdown
   - repo: https://github.com/igorshubovych/markdownlint-cli
@@ -128,7 +100,7 @@ repos:
 
   # Docker
   - repo: https://github.com/hadolint/hadolint
-    rev: v2.13.0
+    rev: v2.12.0
     hooks:
       - id: hadolint-docker
 

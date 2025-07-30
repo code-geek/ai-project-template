@@ -53,6 +53,7 @@ docker-compose up
 ### 4. Manual Setup (Alternative)
 
 #### Backend
+
 ```bash
 cd backend
 
@@ -73,6 +74,7 @@ uv run python manage.py runserver
 ```
 
 #### Frontend
+
 ```bash
 cd frontend
 
@@ -141,7 +143,7 @@ npm install package-name
 
 ## Project Structure Overview
 
-```
+```plaintext
 .
 ├── backend/
 │   ├── apps/          # Django apps
@@ -159,6 +161,7 @@ npm install package-name
 ## Troubleshooting
 
 ### Port Already in Use
+
 ```bash
 # Kill process on port 8000
 lsof -ti:8000 | xargs kill -9
@@ -168,6 +171,7 @@ lsof -ti:3000 | xargs kill -9
 ```
 
 ### Docker Issues
+
 ```bash
 # Clean rebuild
 docker-compose down -v
@@ -176,6 +180,7 @@ docker-compose up
 ```
 
 ### Database Connection Issues
+
 ```bash
 # Check if PostgreSQL is running
 docker-compose ps postgres

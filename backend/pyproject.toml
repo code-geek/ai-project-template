@@ -73,3 +73,11 @@ warn_return_any = true
 warn_unused_configs = true
 ignore_missing_imports = true
 plugins = ["mypy_django_plugin.main"]
+
+[dependency-groups]
+dev = [
+    "django-stubs[compatible-mypy]>=5.2.2",
+    "mypy>=1.17.0",
+    "types-python-dateutil>=2.9.0.20250708",
+    "types-requests>=2.32.4.20250611",
+]

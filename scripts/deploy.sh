@@ -26,27 +26,27 @@ docker-compose -f docker-compose.prod.yml build
 if [ "$ENVIRONMENT" = "production" ]; then
     echo "
 🌍 Deploying to production..."
-    
+
     # Tag images
     docker tag project-backend:latest your-registry/project-backend:latest
     docker tag project-frontend:latest your-registry/project-frontend:latest
-    
+
     # Push to registry
     docker push your-registry/project-backend:latest
     docker push your-registry/project-frontend:latest
-    
+
     # Update services (example for AWS ECS)
     # aws ecs update-service --cluster production --service backend --force-new-deployment
     # aws ecs update-service --cluster production --service frontend --force-new-deployment
-    
+
     echo "✅ Production deployment complete!"
 else
     echo "
 🧪 Deploying to staging..."
-    
+
     # Staging deployment logic here
     docker-compose -f docker-compose.prod.yml up -d
-    
+
     echo "✅ Staging deployment complete!"
 fi
 

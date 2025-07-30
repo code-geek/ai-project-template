@@ -9,7 +9,7 @@
 
 ## 📁 App Structure
 
-```
+```plaintext
 apps/
 ├── core/          # Shared utilities, base models
 ├── users/         # User management, auth
@@ -24,6 +24,7 @@ apps/
 ## 📝 API Patterns
 
 ### Django Ninja Router
+
 ```python
 from ninja import Router
 from .schemas import ItemIn, ItemOut
@@ -41,6 +42,7 @@ def get_item(request, item_id: int):
 ```
 
 ### Service Layer
+
 ```python
 from .models import Item
 
@@ -48,7 +50,7 @@ class ItemService:
     @staticmethod
     def create(data: dict) -> Item:
         return Item.objects.create(**data)
-    
+
     @staticmethod
     def get(item_id: int) -> Item:
         return Item.objects.get(id=item_id)
@@ -57,6 +59,7 @@ class ItemService:
 ## 🔧 Common Tasks
 
 ### Add New App
+
 ```bash
 cd backend/apps
 mkdir new_feature
@@ -67,12 +70,14 @@ touch tests/__init__.py tests/test_api.py
 ```
 
 ### Run Migrations
+
 ```bash
 uv run python manage.py makemigrations
 uv run python manage.py migrate
 ```
 
 ### Testing
+
 ```bash
 # Run all tests
 uv run pytest
@@ -94,6 +99,7 @@ uv run pytest --cov=apps --cov-report=html
 ## 📦 Dependencies
 
 Add new dependencies to `pyproject.toml`:
+
 ```bash
 uv add package-name
 ```

@@ -5,56 +5,72 @@ This directory contains specialized Claude Code agents designed to enhance devel
 ## Available Agents
 
 ### 🔍 **code-reviewer**
+
 Expert code reviewer for quality, security, best practices, and architectural consistency.
+
 - Reviews code for security vulnerabilities
 - Checks performance patterns
 - Ensures coding standards
 - Validates accessibility
 
 ### 🧪 **test-writer**
+
 Comprehensive testing specialist for Django pytest backend and Next.js frontend testing.
+
 - Writes pytest tests for Django
 - Creates React Testing Library tests
 - Implements E2E tests with Playwright
 - Maintains high code coverage
 
 ### 🏗️ **backend-architect**
+
 Django REST API architect specializing in Django Ninja, database design, and scalable backend architecture.
+
 - Designs RESTful APIs with Django Ninja
 - Optimizes database queries
 - Implements authentication patterns
 - Ensures API best practices
 
 ### 🎨 **frontend-engineer**
+
 Next.js and React specialist focusing on modern UI development and performance.
+
 - Creates responsive components
 - Implements state management
 - Optimizes performance
 - Ensures accessibility
 
 ### 🐛 **debugger**
+
 Expert debugging specialist for identifying and resolving errors in Django backend and Next.js frontend.
+
 - Quickly identifies root causes
 - Provides systematic debugging approach
 - Offers specific solutions
 - Implements error prevention
 
 ### ⚡ **performance-optimizer**
+
 Performance optimization specialist focusing on speed, scalability, and resource efficiency.
+
 - Optimizes database queries
 - Reduces bundle sizes
 - Implements caching strategies
 - Monitors performance metrics
 
 ### 🚀 **deployment-engineer**
+
 Deployment and DevOps specialist for Docker, CI/CD, and cloud infrastructure.
+
 - Configures Docker environments
 - Sets up CI/CD pipelines
 - Manages cloud deployments
 - Implements monitoring
 
 ### 📝 **api-designer**
+
 API design specialist focusing on RESTful principles and Django Ninja implementation.
+
 - Designs consistent API endpoints
 - Creates comprehensive schemas
 - Implements proper error handling
@@ -95,6 +111,7 @@ To add a new agent:
 4. Focus on specific expertise area
 
 Example structure:
+
 ```yaml
 ---
 name: your-agent-name

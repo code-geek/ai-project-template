@@ -20,51 +20,57 @@ This template provides a modern, production-ready foundation for building full-s
 ### Using This Template
 
 1. **Create your repository from this template:**
+
    ```bash
    # Using GitHub CLI
    gh repo create my-project --template code-geek/ai-project-template --public
-   
+
    # Or use the GitHub web interface:
    # Click "Use this template" button on GitHub
    ```
 
 2. **Clone and setup your new project:**
+
    ```bash
    git clone https://github.com/YOUR_USERNAME/my-project
    cd my-project
-   
+
    # Run the setup script
    ./scripts/setup-dev.sh
    ```
 
 3. **Start developing:**
+
    ```bash
    # Using Docker (recommended)
    docker-compose up
-   
+
    # Or run separately
    cd backend && uv run python manage.py runserver
    cd frontend && npm run dev
    ```
 
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:8000/api/docs
+   - Frontend: <http://localhost:3000>
+   - Backend API: <http://localhost:8000/api/docs>
 
 ## 🏗️ Tech Stack
 
 ### Backend
+
 - **Framework**: Python 3.12 + Django 5.1 + Django Ninja
 - **Database**: PostgreSQL 16 (SQLite for dev)
 - **Caching**: Redis
 - **Task Queue**: Celery (optional)
 
-### Frontend  
+### Frontend
+
 - **Framework**: Next.js 15 (App Router) + React 19
 - **Language**: TypeScript 5.x
 - **Styling**: Tailwind CSS + shadcn/ui
 - **State**: Zustand / React Context
 
 ### Infrastructure
+
 - **Containers**: Docker + Docker Compose
 - **CI/CD**: GitHub Actions
 - **Deployment**: AWS ECS/EC2 or Vercel
@@ -73,22 +79,26 @@ This template provides a modern, production-ready foundation for building full-s
 ## 🎨 Customization Guide
 
 ### 1. Update Project Information
+
 - Replace `Project Name` with your project name throughout
 - Update `package.json` and `pyproject.toml` with your project details
 - Modify `CLAUDE.md` files to reflect your project's specific needs
 
 ### 2. Configure Environment
+
 - Copy `.env.example` files and update with your settings
 - Update `ALLOWED_HOSTS` and `CORS_ALLOWED_ORIGINS` in Django settings
 - Set your `NEXT_PUBLIC_API_URL` in frontend `.env.local`
 
 ### 3. Customize the Stack
+
 - **Remove Celery**: Delete celery services from `docker-compose.yml` if not needed
 - **Add Authentication**: Implement your preferred auth method (JWT included)
 - **Database**: Switch from PostgreSQL to MySQL/MongoDB if preferred
 - **Styling**: Replace Tailwind with styled-components/emotion if desired
 
 ### 4. Update CI/CD
+
 - Modify `.github/workflows/` to match your deployment target
 - Update branch names if not using `main` and `production`
 - Add your secrets to GitHub repository settings
@@ -109,7 +119,7 @@ Agents activate automatically based on context or can be requested explicitly.
 
 ## 📁 Project Structure
 
-```
+```plaintext
 .
 ├── .claude/          # AI assistant configuration
 │   └── agents/      # Specialized AI agents
@@ -130,6 +140,7 @@ Agents activate automatically based on context or can be requested explicitly.
 ## 🛠️ Development
 
 ### Prerequisites
+
 - Python 3.12+
 - Node.js 20+
 - Docker & Docker Compose

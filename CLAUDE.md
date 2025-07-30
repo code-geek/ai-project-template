@@ -42,6 +42,7 @@
 ## 🔧 Common Commands
 
 ### Backend
+
 ```bash
 cd backend
 uv sync                           # Install dependencies
@@ -52,6 +53,7 @@ uv run ruff check .              # Lint code
 ```
 
 ### Frontend
+
 ```bash
 cd frontend
 npm install                      # Install dependencies

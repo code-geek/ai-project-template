@@ -10,7 +10,7 @@
 
 ## 📁 Project Structure
 
-```
+```plaintext
 src/
 ├── app/              # Next.js App Router
 │   ├── layout.tsx   # Root layout
@@ -28,11 +28,12 @@ src/
 ## 📝 Component Patterns
 
 ### Server Components (default)
+
 ```tsx
 // app/products/page.tsx
 export default async function ProductsPage() {
   const products = await getProducts()
-  
+
   return (
     <div>
       {products.map(product => (
@@ -44,6 +45,7 @@ export default async function ProductsPage() {
 ```
 
 ### Client Components
+
 ```tsx
 'use client'
 
@@ -51,7 +53,7 @@ import { useState } from 'react'
 
 export function Counter() {
   const [count, setCount] = useState(0)
-  
+
   return (
     <button onClick={() => setCount(count + 1)}>
       Count: {count}
@@ -63,6 +65,7 @@ export function Counter() {
 ## 🎨 UI Components
 
 ### Adding shadcn/ui components
+
 ```bash
 npx shadcn@latest add button
 npx shadcn@latest add form
@@ -70,6 +73,7 @@ npx shadcn@latest add dialog
 ```
 
 ### Component usage
+
 ```tsx
 import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
@@ -86,6 +90,7 @@ export function MyComponent() {
 ## 🔧 Common Tasks
 
 ### Create new page
+
 ```bash
 # Create directory and page
 mkdir -p src/app/products
@@ -93,6 +98,7 @@ touch src/app/products/page.tsx
 ```
 
 ### API Integration
+
 ```typescript
 // lib/api.ts
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'
@@ -105,6 +111,7 @@ export async function getProducts() {
 ```
 
 ### State Management
+
 ```typescript
 // stores/auth.ts
 import { create } from 'zustand'

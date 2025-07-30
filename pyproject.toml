@@ -41,6 +41,20 @@ build-backend = "setuptools.build_meta"
 [tool.ruff]
 line-length = 88
 target-version = "py312"
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    "venv",
+    ".venv",
+    "*.egg-info",
+    "frontend/node_modules",
+    "frontend/.next",
+    "frontend/out",
+]
+
+[tool.ruff.lint]
 select = [
     "E",    # pycodestyle errors
     "W",    # pycodestyle warnings
@@ -58,25 +72,13 @@ ignore = [
     "E501",  # line too long (handled by formatter)
     "B008",  # do not perform function calls in argument defaults
 ]
-exclude = [
-    ".git",
-    "__pycache__",
-    "build",
-    "dist",
-    "venv",
-    ".venv",
-    "*.egg-info",
-    "frontend/node_modules",
-    "frontend/.next",
-    "frontend/out",
-]
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]  # Allow unused imports in __init__ files
 "backend/config/settings.py" = ["F401"]  # Settings imports
 "backend/*/migrations/*" = ["E501"]  # Allow long lines in migrations
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 known-first-party = ["apps", "config"]
 known-third-party = ["django", "ninja", "pydantic"]
 

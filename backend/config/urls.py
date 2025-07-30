@@ -1,7 +1,7 @@
-from django.contrib import admin
-from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import path
 from ninja import NinjaAPI
 
 from apps.core.api import router as core_router
@@ -19,8 +19,8 @@ api.add_router("/users/", users_router, tags=["users"])
 api.add_router("/core/", core_router, tags=["core"])
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', api.urls),
+    path("admin/", admin.site.urls),
+    path("api/", api.urls),
 ]
 
 if settings.DEBUG:

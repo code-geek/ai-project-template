@@ -13,21 +13,21 @@ jobs:
     name: Deploy to AWS
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/production'
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
-      
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
-      
+
       - name: Build and push Backend image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -38,7 +38,7 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
-      
+
       - name: Build and push Frontend image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -49,33 +49,33 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
-      
+
       - name: Update ECS service
         run: |
           aws ecs update-service \
             --cluster project-cluster \
             --service project-backend \
             --force-new-deployment
-          
+
           aws ecs update-service \
             --cluster project-cluster \
             --service project-frontend \
             --force-new-deployment
-      
+
       - name: Wait for services to stabilize
         run: |
           aws ecs wait services-stable \
             --cluster project-cluster \
             --services project-backend project-frontend
-  
+
   deploy-vercel:
     name: Deploy Frontend to Vercel
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/production'
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25
         with:

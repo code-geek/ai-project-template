@@ -17,7 +17,8 @@ You are a frontend engineering specialist for Next.js applications. Your experti
 ## Next.js App Structure
 
 ### Project Layout
-```
+
+```plaintext
 src/
 ├── app/                 # App Router pages
 │   ├── layout.tsx      # Root layout
@@ -41,6 +42,7 @@ src/
 ## Component Development
 
 ### Server Components (Default)
+
 ```tsx
 // app/products/page.tsx
 import { getProducts } from '@/lib/api'
@@ -48,7 +50,7 @@ import { ProductGrid } from '@/components/features/ProductGrid'
 
 export default async function ProductsPage() {
   const products = await getProducts()
-  
+
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-3xl font-bold mb-6">Products</h1>
@@ -59,6 +61,7 @@ export default async function ProductsPage() {
 ```
 
 ### Client Components
+
 ```tsx
 'use client'
 
@@ -73,25 +76,25 @@ interface ProductFormProps {
 export function ProductForm({ onSubmit }: ProductFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
-  
+
   const handleSubmit = useCallback(async (e: FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    
+
     try {
       const formData = new FormData(e.currentTarget)
       await onSubmit(Object.fromEntries(formData))
       toast({ title: 'Product created successfully' })
     } catch (error) {
-      toast({ 
+      toast({
         title: 'Error creating product',
-        variant: 'destructive' 
+        variant: 'destructive'
       })
     } finally {
       setIsLoading(false)
     }
   }, [onSubmit, toast])
-  
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* Form fields */}
@@ -106,6 +109,7 @@ export function ProductForm({ onSubmit }: ProductFormProps) {
 ## State Management
 
 ### Zustand Store
+
 ```typescript
 // stores/auth-store.ts
 import { create } from 'zustand'
@@ -132,19 +136,19 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       token: null,
       isAuthenticated: false,
-      
+
       login: (user, token) => set({
         user,
         token,
         isAuthenticated: true
       }),
-      
+
       logout: () => set({
         user: null,
         token: null,
         isAuthenticated: false
       }),
-      
+
       updateUser: (updates) => set((state) => ({
         user: state.user ? { ...state.user, ...updates } : null
       }))
@@ -159,6 +163,7 @@ export const useAuthStore = create<AuthState>()(
 ## API Integration
 
 ### Type-Safe API Client
+
 ```typescript
 // lib/api.ts
 import { z } from 'zod'
@@ -187,19 +192,19 @@ class ApiClient {
         ...options?.headers
       }
     })
-    
+
     if (!response.ok) {
       throw new ApiError(response.status, await response.text())
     }
-    
+
     return response.json()
   }
-  
+
   async getProducts(): Promise<Product[]> {
     const data = await this.request<unknown[]>('/products')
     return z.array(ProductSchema).parse(data)
   }
-  
+
   async createProduct(data: Omit<Product, 'id'>): Promise<Product> {
     const result = await this.request<unknown>('/products', {
       method: 'POST',
@@ -215,6 +220,7 @@ export const api = new ApiClient()
 ## Custom Hooks
 
 ### Data Fetching Hook
+
 ```typescript
 // lib/hooks/use-api.ts
 import { useState, useEffect } from 'react'
@@ -235,27 +241,27 @@ export function useApi<T>(
     isLoading: true,
     refetch: async () => {}
   })
-  
+
   const fetchData = async () => {
     setState(prev => ({ ...prev, isLoading: true }))
-    
+
     try {
       const data = await fetcher()
       setState({ data, error: null, isLoading: false, refetch: fetchData })
     } catch (error) {
-      setState({ 
-        data: null, 
-        error: error as Error, 
+      setState({
+        data: null,
+        error: error as Error,
         isLoading: false,
-        refetch: fetchData 
+        refetch: fetchData
       })
     }
   }
-  
+
   useEffect(() => {
     fetchData()
   }, []) // eslint-disable-line
-  
+
   return state
 }
 ```
@@ -263,6 +269,7 @@ export function useApi<T>(
 ## Performance Optimization
 
 ### Image Optimization
+
 ```tsx
 import Image from 'next/image'
 
@@ -284,20 +291,22 @@ export function ProductImage({ src, alt }: { src: string; alt: string }) {
 ```
 
 ### Code Splitting
+
 ```tsx
 import dynamic from 'next/dynamic'
 
 // Lazy load heavy components
 const ChartComponent = dynamic(
   () => import('@/components/features/ChartComponent'),
-  { 
+  {
     loading: () => <div>Loading chart...</div>,
-    ssr: false 
+    ssr: false
   }
 )
 ```
 
 ### Memoization
+
 ```tsx
 import { memo, useMemo } from 'react'
 
@@ -306,17 +315,17 @@ interface ExpensiveListProps {
   filter: string
 }
 
-export const ExpensiveList = memo(function ExpensiveList({ 
-  items, 
-  filter 
+export const ExpensiveList = memo(function ExpensiveList({
+  items,
+  filter
 }: ExpensiveListProps) {
   const filteredItems = useMemo(
-    () => items.filter(item => 
+    () => items.filter(item =>
       item.name.toLowerCase().includes(filter.toLowerCase())
     ),
     [items, filter]
   )
-  
+
   return (
     <ul>
       {filteredItems.map(item => (
@@ -330,6 +339,7 @@ export const ExpensiveList = memo(function ExpensiveList({
 ## Styling Best Practices
 
 ### Tailwind CSS with Components
+
 ```tsx
 import { cn } from '@/lib/utils'
 
@@ -338,11 +348,11 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'sm' | 'md' | 'lg'
 }
 
-export function Button({ 
+export function Button({
   variant = 'primary',
   size = 'md',
   className,
-  ...props 
+  ...props
 }: ButtonProps) {
   return (
     <button
@@ -371,31 +381,32 @@ export function Button({
 ## Accessibility
 
 ### ARIA Labels and Keyboard Navigation
+
 ```tsx
-export function AccessibleModal({ 
-  isOpen, 
-  onClose, 
-  title, 
-  children 
+export function AccessibleModal({
+  isOpen,
+  onClose,
+  title,
+  children
 }: ModalProps) {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
     }
-    
+
     if (isOpen) {
       document.addEventListener('keydown', handleEscape)
       document.body.style.overflow = 'hidden'
     }
-    
+
     return () => {
       document.removeEventListener('keydown', handleEscape)
       document.body.style.overflow = 'unset'
     }
   }, [isOpen, onClose])
-  
+
   if (!isOpen) return null
-  
+
   return (
     <div
       role="dialog"
@@ -403,7 +414,7 @@ export function AccessibleModal({
       aria-labelledby="modal-title"
       className="fixed inset-0 z-50 flex items-center justify-center"
     >
-      <div 
+      <div
         className="absolute inset-0 bg-black/50"
         onClick={onClose}
         aria-hidden="true"

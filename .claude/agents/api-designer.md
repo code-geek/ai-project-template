@@ -17,7 +17,8 @@ You are an API design specialist with expertise in RESTful principles, Django Ni
 ## RESTful API Principles
 
 ### Resource Naming
-```
+
+```plaintext
 ✅ Good:
 /api/v1/users
 /api/v1/users/{id}
@@ -31,6 +32,7 @@ You are an API design specialist with expertise in RESTful principles, Django Ni
 ```
 
 ### HTTP Methods
+
 - **GET**: Retrieve resources (idempotent)
 - **POST**: Create new resources
 - **PUT**: Full update of resources (idempotent)
@@ -40,6 +42,7 @@ You are an API design specialist with expertise in RESTful principles, Django Ni
 ## Django Ninja Implementation
 
 ### API Structure
+
 ```python
 # api/__init__.py
 from ninja import NinjaAPI
@@ -71,6 +74,7 @@ def validation_error_handler(request, exc):
 ```
 
 ### Comprehensive CRUD API
+
 ```python
 # apps/items/api.py
 from ninja import Router, Query, Path, Body
@@ -78,7 +82,7 @@ from typing import List, Optional
 from django.shortcuts import get_object_or_404
 from .models import Item
 from .schemas import (
-    ItemIn, ItemOut, ItemUpdate, 
+    ItemIn, ItemOut, ItemUpdate,
     ItemFilters, PaginatedResponse
 )
 from .services import ItemService
@@ -97,7 +101,7 @@ def list_items(
 ):
     """
     List items with filtering, pagination, and sorting.
-    
+
     **Filtering options:**
     - search: Search in name and description
     - category_id: Filter by category
@@ -111,7 +115,7 @@ def list_items(
         sort_by=sort_by,
         order=order
     )
-    
+
     return {
         "items": items,
         "pagination": {
@@ -138,8 +142,8 @@ def get_item(
 
 # Create item
 @router.post(
-    "/", 
-    response={201: ItemOut}, 
+    "/",
+    response={201: ItemOut},
     summary="Create new item",
     operation_id="create_item"
 )
@@ -154,7 +158,7 @@ def create_item(
 ):
     """
     Create a new item.
-    
+
     **Required fields:**
     - name: Item name (max 255 chars)
     - price: Item price (must be positive)
@@ -165,7 +169,7 @@ def create_item(
 
 # Update item (full)
 @router.put(
-    "/{item_id}", 
+    "/{item_id}",
     response=ItemOut,
     summary="Update item (full)"
 )
@@ -248,6 +252,7 @@ def get_item_reviews(
 ```
 
 ### Schema Design
+
 ```python
 # apps/items/schemas.py
 from pydantic import BaseModel, Field, validator
@@ -350,6 +355,7 @@ class ErrorResponse(BaseModel):
 ```
 
 ### Error Handling
+
 ```python
 # apps/core/exceptions.py
 from ninja.errors import HttpError
@@ -377,6 +383,7 @@ if not user.can_edit_item(item):
 ```
 
 ### API Documentation
+
 ```python
 # Auto-generated OpenAPI schema
 # Additional customization
@@ -408,6 +415,7 @@ def api_info(request):
 ## Best Practices
 
 ### 1. Consistent Response Format
+
 ```python
 # Success response
 {
@@ -435,6 +443,7 @@ def api_info(request):
 ```
 
 ### 2. API Versioning
+
 ```python
 # URL versioning (recommended)
 /api/v1/items
@@ -445,6 +454,7 @@ Accept: application/vnd.api+json;version=1.0
 ```
 
 ### 3. Rate Limiting
+
 ```python
 from django.core.cache import cache
 from functools import wraps
@@ -455,10 +465,10 @@ def rate_limit(max_calls=100, time_window=3600):
         def wrapper(request, *args, **kwargs):
             key = f"rate_limit:{request.user.id}:{func.__name__}"
             calls = cache.get(key, 0)
-            
+
             if calls >= max_calls:
                 raise HttpError(429, "Rate limit exceeded")
-            
+
             cache.set(key, calls + 1, time_window)
             return func(request, *args, **kwargs)
         return wrapper
@@ -471,10 +481,11 @@ def create_item(request, data: ItemIn):
 ```
 
 ### 4. HATEOAS Links
+
 ```python
 class ItemOutWithLinks(ItemOut):
     links: dict
-    
+
     @staticmethod
     def resolve_links(obj):
         return {

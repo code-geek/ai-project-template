@@ -17,6 +17,7 @@ You are a test automation specialist expert in both backend (Django/pytest) and 
 ## Backend Testing (Django/Pytest)
 
 ### Test Structure
+
 ```python
 # backend/apps/<app_name>/tests/test_api.py
 import pytest
@@ -31,7 +32,7 @@ class TestItemAPI:
     def authenticated_client(self, db):
         user = User.objects.create_user(
             email="test@example.com",
-            password="testpass123"
+            password="testpass123"  # pragma: allowlist secret
         )
         client = TestClient(router)
         # Add auth headers
@@ -47,6 +48,7 @@ class TestItemAPI:
 ### Testing Patterns
 
 #### API Endpoint Tests
+
 ```python
 def test_create_item_valid_data(authenticated_client):
     client, _ = authenticated_client
@@ -60,22 +62,24 @@ def test_create_item_valid_data(authenticated_client):
 ```
 
 #### Service Layer Tests
+
 ```python
 @pytest.mark.django_db
 def test_calculate_total():
     from apps.core.services import CalculateTotal
-    
+
     service = CalculateTotal()
     result = service.execute(items=[10, 20, 30])
     assert result == 60
 ```
 
 #### Model Tests
+
 ```python
 @pytest.mark.django_db
 def test_model_validation():
     from apps.core.models import Item
-    
+
     with pytest.raises(ValidationError):
         item = Item(name="")  # Empty name should fail
         item.full_clean()
@@ -84,6 +88,7 @@ def test_model_validation():
 ## Frontend Testing (Next.js/Jest/React Testing Library)
 
 ### Component Tests
+
 ```typescript
 // frontend/__tests__/components/ItemCard.test.tsx
 import { render, screen, fireEvent } from '@testing-library/react'
@@ -104,7 +109,7 @@ describe('ItemCard', () => {
   it('calls onClick when clicked', () => {
     const handleClick = jest.fn()
     render(<ItemCard item={mockItem} onClick={handleClick} />)
-    
+
     fireEvent.click(screen.getByRole('button'))
     expect(handleClick).toHaveBeenCalledWith(mockItem.id)
   })
@@ -112,6 +117,7 @@ describe('ItemCard', () => {
 ```
 
 ### Hook Tests
+
 ```typescript
 // frontend/__tests__/hooks/useCounter.test.ts
 import { renderHook, act } from '@testing-library/react'
@@ -119,18 +125,19 @@ import { useCounter } from '@/hooks/useCounter'
 
 test('increments counter', () => {
   const { result } = renderHook(() => useCounter())
-  
+
   act(() => {
     result.current.increment()
   })
-  
+
   expect(result.current.count).toBe(1)
 })
 ```
 
 ## E2E Testing (Playwright)
 
-### Test Structure
+### E2E Test Structure
+
 ```typescript
 // frontend/e2e/user-flow.spec.ts
 import { test, expect } from '@playwright/test'
@@ -142,16 +149,16 @@ test.describe('User Flow', () => {
     await page.fill('[name="email"]', 'test@example.com')
     await page.fill('[name="password"]', 'password')
     await page.click('button[type="submit"]')
-    
+
     // Navigate to items
     await page.goto('/items')
     await expect(page.locator('h1')).toContainText('Items')
-    
+
     // Create new item
     await page.click('text=New Item')
     await page.fill('[name="name"]', 'Test Item')
     await page.click('text=Save')
-    
+
     // Verify creation
     await expect(page.locator('text=Test Item')).toBeVisible()
   })
@@ -161,12 +168,14 @@ test.describe('User Flow', () => {
 ## Coverage Requirements
 
 ### Backend Coverage Goals
+
 - Models: 90%+ coverage
-- Services: 95%+ coverage  
+- Services: 95%+ coverage
 - API endpoints: 100% coverage
 - Utils: 80%+ coverage
 
 ### Frontend Coverage Goals
+
 - Components: 80%+ coverage
 - Hooks: 90%+ coverage
 - Utils: 95%+ coverage
@@ -175,6 +184,7 @@ test.describe('User Flow', () => {
 ## Running Tests
 
 ### Backend Commands
+
 ```bash
 # Run all tests
 cd backend && pytest
@@ -190,6 +200,7 @@ pytest -n auto
 ```
 
 ### Frontend Commands
+
 ```bash
 # Run all tests
 cd frontend && npm test

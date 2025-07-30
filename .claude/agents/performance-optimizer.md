@@ -19,6 +19,7 @@ You are a performance optimization specialist. Your role is to identify bottlene
 ### Database Query Optimization
 
 #### 1. N+1 Query Problems
+
 ```python
 # ❌ Bad: N+1 queries
 def get_items_bad():
@@ -46,6 +47,7 @@ def get_items_good():
 ```
 
 #### 2. Database Indexing
+
 ```python
 # models.py
 class Item(models.Model):
@@ -53,7 +55,7 @@ class Item(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
-    
+
     class Meta:
         indexes = [
             models.Index(fields=['category', 'is_active']),  # Composite index
@@ -67,6 +69,7 @@ class Item(models.Model):
 ```
 
 #### 3. Query Optimization Techniques
+
 ```python
 # Use only() to fetch specific fields
 items = Item.objects.only('id', 'name', 'price')
@@ -95,6 +98,7 @@ stats = Item.objects.aggregate(
 ### Caching Strategies
 
 #### 1. Redis Caching
+
 ```python
 # settings.py
 CACHES = {
@@ -120,17 +124,18 @@ def product_list(request):
 def get_popular_items():
     cache_key = 'popular_items'
     items = cache.get(cache_key)
-    
+
     if items is None:
         items = Item.objects.filter(
             is_popular=True
         ).select_related('category')[:10]
         cache.set(cache_key, items, 3600)  # 1 hour
-    
+
     return items
 ```
 
 #### 2. Query Result Caching
+
 ```python
 from functools import lru_cache
 from django.core.cache import cache
@@ -140,7 +145,7 @@ class ItemService:
     def get_item_stats(category_id: int):
         cache_key = f'item_stats_{category_id}'
         stats = cache.get(cache_key)
-        
+
         if stats is None:
             stats = Item.objects.filter(
                 category_id=category_id
@@ -149,9 +154,9 @@ class ItemService:
                 avg_price=Avg('price')
             )
             cache.set(cache_key, stats, 300)  # 5 minutes
-        
+
         return stats
-    
+
     @staticmethod
     @lru_cache(maxsize=128)
     def calculate_complex_value(param1, param2):
@@ -169,7 +174,7 @@ def item_list_api(request):
     items = Item.objects.select_related('category')
     paginator = Paginator(items, 20)  # 20 items per page
     page = paginator.get_page(request.GET.get('page', 1))
-    
+
     return JsonResponse({
         'items': list(page.object_list.values()),
         'total': paginator.count,
@@ -185,6 +190,7 @@ from django.core.paginator import CursorPaginator
 ### Bundle Size Optimization
 
 #### 1. Code Splitting
+
 ```typescript
 // Dynamic imports
 import dynamic from 'next/dynamic'
@@ -192,7 +198,7 @@ import dynamic from 'next/dynamic'
 // Lazy load heavy components
 const HeavyChart = dynamic(
   () => import('@/components/HeavyChart'),
-  { 
+  {
     loading: () => <div>Loading chart...</div>,
     ssr: false  // Disable SSR for client-only components
   }
@@ -203,6 +209,7 @@ const HeavyChart = dynamic(
 ```
 
 #### 2. Tree Shaking
+
 ```typescript
 // ❌ Bad: Import entire library
 import * as _ from 'lodash'
@@ -268,6 +275,7 @@ export function ResponsiveImage({ src, alt }) {
 ### React Performance
 
 #### 1. Memoization
+
 ```typescript
 import { memo, useMemo, useCallback } from 'react'
 
@@ -277,14 +285,14 @@ export function ExpensiveComponent({ data, filter }) {
     () => data.filter(item => item.category === filter),
     [data, filter]
   )
-  
+
   const handleClick = useCallback(
     (id: number) => {
       console.log('Clicked:', id)
     },
     []  // Empty deps = function never changes
   )
-  
+
   return (
     <div>
       {filteredData.map(item => (
@@ -312,6 +320,7 @@ const ItemCard = memo(function ItemCard({ item, onClick }) {
 ```
 
 #### 2. Virtual Scrolling
+
 ```typescript
 import { FixedSizeList } from 'react-window'
 
@@ -321,7 +330,7 @@ export function VirtualList({ items }) {
       {items[index].name}
     </div>
   )
-  
+
   return (
     <FixedSizeList
       height={600}
@@ -338,6 +347,7 @@ export function VirtualList({ items }) {
 ### Web Vitals Optimization
 
 #### 1. Improve LCP (Largest Contentful Paint)
+
 ```typescript
 // Preload critical resources
 <Head>
@@ -359,6 +369,7 @@ export function VirtualList({ items }) {
 ```
 
 #### 2. Reduce CLS (Cumulative Layout Shift)
+
 ```css
 /* Reserve space for dynamic content */
 .image-container {
@@ -375,6 +386,7 @@ export function VirtualList({ items }) {
 ## Performance Monitoring
 
 ### Backend Monitoring
+
 ```python
 # Use Django Debug Toolbar in development
 if DEBUG:
@@ -391,24 +403,25 @@ def measure_performance(func):
         start = time.time()
         result = func(*args, **kwargs)
         duration = time.time() - start
-        
+
         if duration > 1.0:  # Log slow operations
             logger.warning(
                 f"{func.__name__} took {duration:.2f}s"
             )
-        
+
         return result
     return wrapper
 ```
 
 ### Frontend Monitoring
+
 ```typescript
 // pages/_app.tsx
 export function reportWebVitals(metric) {
   // Send to analytics
   if (metric.label === 'web-vital') {
     console.log(metric)
-    
+
     // Send to your analytics service
     analytics.track('Web Vital', {
       name: metric.name,
@@ -432,6 +445,7 @@ performance.measure(
 ## Performance Checklist
 
 ### Backend
+
 - [ ] Database queries use select_related/prefetch_related
 - [ ] Appropriate database indexes exist
 - [ ] API responses are paginated
@@ -440,6 +454,7 @@ performance.measure(
 - [ ] Gzip compression is enabled
 
 ### Frontend
+
 - [ ] Images are optimized and lazy loaded
 - [ ] JavaScript bundles are code-split
 - [ ] Critical CSS is inlined

@@ -17,7 +17,8 @@ You are a backend architecture specialist for Django projects using Django Ninja
 ## Django App Structure
 
 ### Standard App Layout
-```
+
+```plaintext
 apps/
 ├── <app_name>/
 │   ├── __init__.py
@@ -39,6 +40,7 @@ apps/
 ## API Design with Django Ninja
 
 ### Router Setup
+
 ```python
 # apps/items/api.py
 from ninja import Router, Query
@@ -78,6 +80,7 @@ def delete_item(request, item_id: int):
 ```
 
 ### Schema Design
+
 ```python
 # apps/items/schemas.py
 from pydantic import BaseModel, Field
@@ -98,7 +101,7 @@ class ItemOut(ItemBase):
     category: str
     created_at: datetime
     updated_at: datetime
-    
+
     class Config:
         from_attributes = True
 
@@ -113,6 +116,7 @@ class ItemFilters(BaseModel):
 ## Service Layer Pattern
 
 ### Business Logic Services
+
 ```python
 # apps/items/services.py
 from django.db import transaction
@@ -128,40 +132,41 @@ class ItemService:
         # Validate business rules
         if data['price'] > 10000:
             raise ValidationError("Price cannot exceed 10000")
-        
+
         # Create item
         item = Item.objects.create(
             **data,
             created_by=user
         )
-        
+
         # Send notification, update cache, etc.
         # notify_item_created.delay(item.id)
-        
+
         return item
-    
+
     @staticmethod
     def get_item(item_id: int) -> Item:
         return get_item_or_404(item_id)
-    
+
     @staticmethod
     @transaction.atomic
     def update_item(item_id: int, data: dict, user) -> Item:
         item = get_item_or_404(item_id)
-        
+
         # Check permissions
         if not user.can_edit_item(item):
             raise PermissionError("You cannot edit this item")
-        
+
         # Update fields
         for key, value in data.items():
             setattr(item, key, value)
-        
+
         item.save()
         return item
 ```
 
 ### Query Selectors
+
 ```python
 # apps/items/selectors.py
 from django.shortcuts import get_object_or_404
@@ -180,17 +185,17 @@ def get_items(filters: dict, page: int = 1, page_size: int = 20):
         'category',
         'created_by'
     ).prefetch_related('tags')
-    
+
     # Apply filters
     if filters.get('search'):
         queryset = queryset.filter(
             Q(name__icontains=filters['search']) |
             Q(description__icontains=filters['search'])
         )
-    
+
     if filters.get('category_id'):
         queryset = queryset.filter(category_id=filters['category_id'])
-    
+
     # Pagination
     offset = (page - 1) * page_size
     return queryset[offset:offset + page_size]
@@ -199,6 +204,7 @@ def get_items(filters: dict, page: int = 1, page_size: int = 20):
 ## Database Design
 
 ### Model Best Practices
+
 ```python
 # apps/items/models.py
 from django.db import models
@@ -210,14 +216,14 @@ class TimestampedModel(models.Model):
     """Abstract base model with timestamps."""
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         abstract = True
 
 class Category(TimestampedModel):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(unique=True)
-    
+
     class Meta:
         verbose_name_plural = "categories"
         indexes = [
@@ -240,7 +246,7 @@ class Item(TimestampedModel):
         null=True,
         related_name='created_items'
     )
-    
+
     class Meta:
         indexes = [
             models.Index(fields=['category', 'is_active']),
@@ -252,6 +258,7 @@ class Item(TimestampedModel):
 ## Authentication & Permissions
 
 ### JWT Authentication Setup
+
 ```python
 # apps/users/auth.py
 from ninja.security import HttpBearer
@@ -282,6 +289,7 @@ def protected_endpoint(request):
 ## Performance Optimization
 
 ### Query Optimization
+
 ```python
 # Bad - N+1 queries
 items = Item.objects.all()
@@ -298,19 +306,20 @@ items = Item.objects.prefetch_related('tags').all()
 ```
 
 ### Caching Strategy
+
 ```python
 from django.core.cache import cache
 
 def get_popular_items():
     cache_key = 'popular_items'
     items = cache.get(cache_key)
-    
+
     if items is None:
         items = Item.objects.filter(
             is_active=True
         ).order_by('-view_count')[:10]
         cache.set(cache_key, items, 3600)  # Cache for 1 hour
-    
+
     return items
 ```
 
