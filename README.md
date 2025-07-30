@@ -1,34 +1,52 @@
-# Project Name 🚀
+# AI Project Template 🚀
 
-> **One-line description of what your project does**
+> **A comprehensive Django + Next.js template optimized for AI-assisted development**
 
-Brief paragraph explaining the problem your project solves and why it exists. Keep it engaging and focused on value.
+This template provides a modern, production-ready foundation for building full-stack applications with Django and Next.js. It's specifically designed to work seamlessly with AI coding assistants like Claude, featuring specialized agents, clear documentation structure, and best practices baked in.
 
-## ✨ Key Features
+## ✨ Why Use This Template?
 
-- **🎯 Feature 1**: Brief description
-- **🔥 Feature 2**: Brief description  
-- **💡 Feature 3**: Brief description
-- **🛡️ Feature 4**: Brief description
+- **🤖 AI-Optimized**: Includes Claude Code agents and CLAUDE.md files for enhanced AI assistance
+- **🏗️ Modern Stack**: Django 5.1 + Django Ninja backend, Next.js 15 + TypeScript frontend
+- **🚀 Production-Ready**: Docker, CI/CD workflows, and deployment scripts included
+- **📚 Well-Documented**: Comprehensive docs and inline guidance for easy customization
+- **🧪 Testing Built-in**: Pytest for backend, Playwright for E2E, with example tests
+- **🎨 Beautiful UI**: Tailwind CSS + shadcn/ui components pre-configured
 
 ## 🚀 Quick Start
 
-Get up and running in 5 minutes:
+### Using This Template
 
-```bash
-# 1. Clone the repository
-git clone <repo-url>
-cd project-name
+1. **Create your repository from this template:**
+   ```bash
+   # Using GitHub CLI
+   gh repo create my-project --template code-geek/ai-project-template --public
+   
+   # Or use the GitHub web interface:
+   # Click "Use this template" button on GitHub
+   ```
 
-# 2. Run the setup script
-./scripts/setup-dev.sh
+2. **Clone and setup your new project:**
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/my-project
+   cd my-project
+   
+   # Run the setup script
+   ./scripts/setup-dev.sh
+   ```
 
-# 3. Start the development servers
-docker-compose up
+3. **Start developing:**
+   ```bash
+   # Using Docker (recommended)
+   docker-compose up
+   
+   # Or run separately
+   cd backend && uv run python manage.py runserver
+   cd frontend && npm run dev
+   ```
 
-# Visit http://localhost:3000 (frontend)
-# API docs at http://localhost:8000/api/docs
-```
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:8000/api/docs
 
 ## 🏗️ Tech Stack
 
@@ -50,12 +68,58 @@ docker-compose up
 - **Deployment**: AWS ECS/EC2 or Vercel
 - **Monitoring**: Sentry (optional)
 
+## 🎨 Customization Guide
+
+### 1. Update Project Information
+- Replace `Project Name` with your project name throughout
+- Update `package.json` and `pyproject.toml` with your project details
+- Modify `CLAUDE.md` files to reflect your project's specific needs
+
+### 2. Configure Environment
+- Copy `.env.example` files and update with your settings
+- Update `ALLOWED_HOSTS` and `CORS_ALLOWED_ORIGINS` in Django settings
+- Set your `NEXT_PUBLIC_API_URL` in frontend `.env.local`
+
+### 3. Customize the Stack
+- **Remove Celery**: Delete celery services from `docker-compose.yml` if not needed
+- **Add Authentication**: Implement your preferred auth method (JWT included)
+- **Database**: Switch from PostgreSQL to MySQL/MongoDB if preferred
+- **Styling**: Replace Tailwind with styled-components/emotion if desired
+
+### 4. Update CI/CD
+- Modify `.github/workflows/` to match your deployment target
+- Update branch names if not using `main` and `production`
+- Add your secrets to GitHub repository settings
+
+## 🤖 Claude Code Agents
+
+This template includes specialized AI agents in `.claude/agents/`:
+
+- **code-reviewer**: Reviews code for quality and security
+- **test-writer**: Writes comprehensive tests
+- **backend-architect**: Designs Django REST APIs
+- **frontend-engineer**: Builds React/Next.js features
+- **debugger**: Systematically resolves errors
+- **performance-optimizer**: Improves speed and efficiency
+- **api-designer**: Creates RESTful API specifications
+
+Agents activate automatically based on context or can be requested explicitly.
+
 ## 📁 Project Structure
 
 ```
 .
+├── .claude/          # AI assistant configuration
+│   └── agents/      # Specialized AI agents
 ├── backend/          # Django REST API
+│   ├── apps/        # Django applications
+│   ├── config/      # Settings and configuration
+│   └── tests/       # Test files
 ├── frontend/         # Next.js application
+│   ├── src/         # Source code
+│   │   ├── app/     # App Router pages
+│   │   └── components/ # React components
+│   └── tests/       # Test files
 ├── docs/            # Documentation
 ├── scripts/         # Utility scripts
 └── docker-compose.yml
@@ -151,4 +215,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Need help?** Check out our [documentation](docs/) or [open an issue](https://github.com/username/project/issues).
+## 📖 Template Documentation
+
+- [How to Use This Template](docs/TEMPLATE_USAGE.md)
+- [Customization Examples](docs/CUSTOMIZATION_EXAMPLES.md)
+- [Deployment Options](docs/deployment/)
+- [Adding New Features](docs/ADDING_FEATURES.md)
+
+---
+
+**Need help?** [Open an issue](https://github.com/code-geek/ai-project-template/issues) or check the [documentation](docs/).

@@ -1,5 +1,7 @@
 # 🤖 AI Assistant Instructions
 
+> **Note**: This is a template repository. When using this template for your own project, customize this file to match your specific workflow and requirements.
+
 ## 📋 User's Preferred Workflow
 
 1. Think through problem, read codebase, write plan to docs/project_management/TODO.md
