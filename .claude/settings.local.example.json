@@ -1,0 +1,65 @@
+{
+	"description": "Example local settings for Claude Code - copy to settings.local.json and customize",
+	"hooks": {
+		"PostToolUse": [
+			{
+				"description": "Auto-stage files to git after editing",
+				"matcher": "Write|Edit|MultiEdit",
+				"hooks": [
+					{
+						"type": "command",
+						"command": ".claude/hooks/git-auto-stage.sh"
+					}
+				]
+			},
+			{
+				"description": "Run tests automatically when test files change",
+				"matcher": "Write|Edit|MultiEdit",
+				"filePatterns": ["test_*.py", "*.test.ts", "*.spec.ts"],
+				"hooks": [
+					{
+						"type": "command",
+						"command": ".claude/hooks/test-on-save.sh",
+						"run_in_background": true
+					}
+				]
+			}
+		],
+		"PreToolUse": [
+			{
+				"description": "Enhanced security checks",
+				"matcher": "Bash|Write|Edit",
+				"hooks": [
+					{
+						"type": "command",
+						"command": ".claude/hooks/security-check.sh"
+					}
+				]
+			}
+		],
+		"Stop": [
+			{
+				"description": "Show test coverage after changes",
+				"matcher": "",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash -c 'if [[ -n \"$CLAUDE_SESSION_MODIFIED_FILES\" ]]; then echo \"📊 Consider checking test coverage with: make test\"; fi'"
+					}
+				]
+			}
+		],
+		"Notification": [
+			{
+				"description": "Desktop notification for Claude messages",
+				"matcher": "",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash -c 'if command -v osascript &> /dev/null; then osascript -e \"display notification \\\"$CLAUDE_NOTIFICATION_MESSAGE\\\" with title \\\"Claude Code\\\"\"; fi'"
+					}
+				]
+			}
+		]
+	}
+}

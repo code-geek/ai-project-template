@@ -93,6 +93,17 @@ npm run type-check              # TypeScript check
 - Document complex business logic
 - Add examples for new patterns
 
+## 🪝 Claude Code Hooks
+
+This project includes helpful hooks that run automatically:
+
+- **Format on save**: Python and TypeScript files are auto-formatted
+- **Security checks**: Dangerous commands are blocked
+- **Model changes**: Notifies when Django migrations may be needed
+- **Git context**: Shows current branch and status with each prompt
+
+See `.claude/hooks/` for customizable hook scripts and `.claude/settings.json` for configuration.
+
 ## 🔒 Security Notes
 
 - Never commit secrets or API keys

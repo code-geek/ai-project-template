@@ -1,0 +1,86 @@
+{
+	"description": "Claude Code settings for AI Project Template",
+	"hooks": {
+		"PostToolUse": [
+			{
+				"description": "Format Python files after editing",
+				"matcher": "Write|Edit|MultiEdit",
+				"filePatterns": ["*.py"],
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash -c 'if [[ \"$CLAUDE_TOOL_FILE_PATH\" == *.py ]] && [[ -f \"$CLAUDE_TOOL_FILE_PATH\" ]]; then cd backend && uv run ruff format \"$CLAUDE_TOOL_FILE_PATH\" --quiet && uv run ruff check \"$CLAUDE_TOOL_FILE_PATH\" --fix --quiet; fi'"
+					}
+				]
+			},
+			{
+				"description": "Format TypeScript/JavaScript files after editing",
+				"matcher": "Write|Edit|MultiEdit",
+				"filePatterns": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash -c 'if [[ \"$CLAUDE_TOOL_FILE_PATH\" =~ \\.(ts|tsx|js|jsx)$ ]] && [[ -f \"$CLAUDE_TOOL_FILE_PATH\" ]]; then cd frontend && npm run lint --silent -- \"$CLAUDE_TOOL_FILE_PATH\" 2>/dev/null || true; fi'"
+					}
+				]
+			},
+			{
+				"description": "Run Django migrations check after model changes",
+				"matcher": "Write|Edit|MultiEdit",
+				"filePatterns": ["*/models.py"],
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash -c 'if [[ \"$CLAUDE_TOOL_FILE_PATH\" == */models.py ]]; then echo \"🔍 Model file changed. Remember to run: make db-migrate\"; fi'"
+					}
+				]
+			}
+		],
+		"PreToolUse": [
+			{
+				"description": "Prevent accidental deletion of critical files",
+				"matcher": "Bash",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash -c 'if echo \"$CLAUDE_TOOL_COMMAND\" | grep -qE \"rm.*(-rf|migrations|.env|settings\\.py|manage\\.py)\"; then echo \"⚠️  Warning: Attempting to delete critical files. Please confirm this is intentional.\"; exit 2; fi'"
+					}
+				]
+			},
+			{
+				"description": "Warn about direct database operations",
+				"matcher": "Bash",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash -c 'if echo \"$CLAUDE_TOOL_COMMAND\" | grep -qE \"(DROP|TRUNCATE|DELETE FROM)\"; then echo \"⚠️  Warning: Direct database operation detected. Consider using Django ORM instead.\"; fi'"
+					}
+				]
+			}
+		],
+		"Stop": [
+			{
+				"description": "Reminder to run tests after significant changes",
+				"matcher": "",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash -c 'if [[ -n \"$CLAUDE_SESSION_MODIFIED_FILES\" ]]; then echo \"\\n✅ Changes complete! Consider running:\\n  - make test (run all tests)\\n  - make lint (check code quality)\\n  - pre-commit run --all-files (run all hooks)\"; fi'"
+					}
+				]
+			}
+		],
+		"UserPromptSubmit": [
+			{
+				"description": "Add context about current git branch and status",
+				"matcher": "",
+				"hooks": [
+					{
+						"type": "command",
+						"command": "bash -c 'if command -v git &> /dev/null && git rev-parse --git-dir &> /dev/null; then echo \"📍 Current branch: $(git branch --show-current)\"; git status --short | head -5; fi'"
+					}
+				]
+			}
+		]
+	}
+}
