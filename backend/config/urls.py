@@ -2,21 +2,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
-from ninja import NinjaAPI
 
-from apps.core.api import router as core_router
-from apps.users.api import router as users_router
-
-api = NinjaAPI(
-    title="Project API",
-    version="1.0.0",
-    description="API for Project",
-    docs_url="/docs",
-)
-
-# Register routers
-api.add_router("/users/", users_router, tags=["users"])
-api.add_router("/core/", core_router, tags=["core"])
+from config.api_config import api
 
 urlpatterns = [
     path("admin/", admin.site.urls),
