@@ -62,30 +62,62 @@ repos:
         args: [--target-version, "5.1"]
         files: ^backend/
 
-  # Frontend - TypeScript/JavaScript
-  - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v9.16.0
+  # Frontend - Biome (replaces ESLint + Prettier for JS/TS)
+  - repo: https://github.com/biomejs/pre-commit
+    rev: v0.6.0
     hooks:
-      - id: eslint
-        files: \.[jt]sx?$
-        types: [file]
-        additional_dependencies:
-          - eslint@9.16.0
-          - typescript@5.6.3
-          - "@typescript-eslint/eslint-plugin@8.13.0"
-          - "@typescript-eslint/parser@8.13.0"
-          - eslint-config-next@15.0.3
-          - eslint-config-prettier@9.1.0
-        args: [--fix]
-        exclude: ^(frontend/node_modules|frontend/.next)/
+      - id: biome-check
+        additional_dependencies: ["@biomejs/biome@1.9.4"]
+        args: [--write]
+        files: \.(js|jsx|ts|tsx|json)$
+        exclude: ^(frontend/node_modules|frontend/.next|frontend/out)/
 
-  # Frontend - Prettier
+  # Frontend - Type checking
+  - repo: local
+    hooks:
+      - id: typescript-check
+        name: TypeScript type checking
+        entry: bash -c 'cd frontend && npm run type-check'
+        language: system
+        files: ^frontend/.*\.(ts|tsx)$
+        pass_filenames: false
+
+  # Frontend - Prettier for non-JS files
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v3.3.3
     hooks:
       - id: prettier
-        types_or: [css, scss, json, yaml, markdown]
+        types_or: [css, scss, markdown]
         exclude: ^(frontend/node_modules|frontend/.next|pnpm-lock.yaml)/
+
+  # AI-friendly: Check for console.log statements
+  - repo: local
+    hooks:
+      - id: no-console-log
+        name: Check for console.log
+        entry: bash -c 'grep -r "console\.log" frontend/src --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" && echo "console.log found! Use proper logging." && exit 1 || exit 0'
+        language: system
+        pass_filenames: false
+        files: ^frontend/src/.*\.(ts|tsx|js|jsx)$
+
+  # AI-friendly: Check for TODO/FIXME comments
+  - repo: local
+    hooks:
+      - id: check-todos
+        name: Check for TODO/FIXME comments
+        entry: bash -c 'grep -rE "(TODO|FIXME|XXX|HACK|BUG)" --include="*.ts" --include="*.tsx" --include="*.py" . && echo "Found TODO/FIXME comments. Please address or create issues." || exit 0'
+        language: system
+        pass_filenames: false
+        types: [text]
+
+  # Check for large files that might be model weights or datasets
+  - repo: local
+    hooks:
+      - id: check-model-files
+        name: Check for AI model files
+        entry: bash -c 'find . -name "*.pkl" -o -name "*.h5" -o -name "*.pt" -o -name "*.pth" -o -name "*.onnx" -o -name "*.safetensors" | grep -v ".gitignore" && echo "Found AI model files! Use Git LFS or external storage." && exit 1 || exit 0'
+        language: system
+        pass_filenames: false
 
   # Markdown
   - repo: https://github.com/igorshubovych/markdownlint-cli

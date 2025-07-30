@@ -1,0 +1,70 @@
+# Auto detect text files and perform LF normalization
+* text=auto eol=lf
+
+# Explicitly declare text files
+*.py text
+*.js text
+*.jsx text
+*.ts text
+*.tsx text
+*.json text
+*.md text
+*.yml text
+*.yaml text
+*.toml text
+*.css text
+*.scss text
+*.html text
+*.xml text
+*.txt text
+*.sh text
+*.env text
+*.example text
+
+# Declare files that will always have LF line endings on checkout
+*.sh text eol=lf
+*.py text eol=lf
+
+# Denote all files that are truly binary and should not be modified
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.zip binary
+*.gz binary
+*.tar binary
+*.7z binary
+
+# AI model files (binary)
+*.pkl binary
+*.h5 binary
+*.pt binary
+*.pth binary
+*.onnx binary
+*.safetensors binary
+*.ckpt binary
+*.bin binary
+*.weights binary
+
+# Jupyter notebooks
+*.ipynb text eol=lf
+
+# Linguist overrides for better GitHub statistics
+*.html linguist-detectable=false
+*.css linguist-detectable=false
+frontend/public/* linguist-vendored
+frontend/.next/* linguist-generated
+backend/migrations/* linguist-generated
+
+# Diff settings
+*.py diff=python
+*.js diff=javascript
+*.ts diff=javascript
+*.tsx diff=javascript
+*.jsx diff=javascript
