@@ -1,0 +1,167 @@
+[project]
+name = "ai-project-template"
+version = "0.1.0"
+description = "Production-ready Django + Next.js template with AI-powered development tools"
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MIT"}
+authors = [
+    {name = "Ashish Acharya", email = "code-geek@example.com"}
+]
+keywords = ["django", "nextjs", "template", "ai", "claude", "fullstack"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Framework :: Django :: 5.1",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+
+[project.urls]
+Repository = "https://github.com/code-geek/ai-project-template"
+Documentation = "https://github.com/code-geek/ai-project-template#readme"
+Issues = "https://github.com/code-geek/ai-project-template/issues"
+
+# Development dependencies for the template itself
+[project.optional-dependencies]
+dev = [
+    "pre-commit>=3.8.0",
+    "pre-commit-uv>=4.1.4",
+]
+
+[build-system]
+requires = ["setuptools>=75.3.0"]
+build-backend = "setuptools.build_meta"
+
+# Tool configurations for the template
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "UP",   # pyupgrade
+    "ARG",  # flake8-unused-arguments
+    "SIM",  # flake8-simplify
+    "TID",  # flake8-tidy-imports
+    "RUF",  # Ruff-specific rules
+]
+ignore = [
+    "E501",  # line too long (handled by formatter)
+    "B008",  # do not perform function calls in argument defaults
+]
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    "venv",
+    ".venv",
+    "*.egg-info",
+    "frontend/node_modules",
+    "frontend/.next",
+    "frontend/out",
+]
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]  # Allow unused imports in __init__ files
+"backend/config/settings.py" = ["F401"]  # Settings imports
+"backend/*/migrations/*" = ["E501"]  # Allow long lines in migrations
+
+[tool.ruff.isort]
+known-first-party = ["apps", "config"]
+known-third-party = ["django", "ninja", "pydantic"]
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+strict_equality = true
+exclude = [
+    "venv",
+    ".venv",
+    "frontend",
+    "*/migrations/*",
+]
+
+[tool.black]
+line-length = 88
+target-version = ["py312"]
+exclude = '''
+/(
+    \.git
+  | __pycache__
+  | build
+  | dist
+  | venv
+  | \.venv
+  | frontend
+  | .*\.egg-info
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 88
+known_django = ["django"]
+known_first_party = ["apps", "config"]
+sections = ["FUTURE", "STDLIB", "DJANGO", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+skip = ["venv", ".venv", "migrations", "frontend"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+testpaths = ["backend/tests", "backend/apps/*/tests"]
+addopts = "-ra -q --strict-markers"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+]
+
+[tool.coverage.run]
+source = ["backend"]
+omit = [
+    "*/migrations/*",
+    "*/tests/*",
+    "*/test_*.py",
+    "backend/config/wsgi.py",
+    "backend/config/asgi.py",
+    "backend/manage.py",
+]
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstract",
+]
+
+[tool.djlint]
+ignore = "H017,H031"
+include = "H017,H031"
+indent = 2
+max_line_length = 120
+format_attribute_template_tags = true
+exclude = ".git,.hg,.mypy_cache,.tox,.venv,_build,buck-out,build,dist,migrations"

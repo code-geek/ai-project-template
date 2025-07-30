@@ -56,8 +56,10 @@ docker-compose up
 ```bash
 cd backend
 
-# Install dependencies
+# Install uv (Python package manager)
 curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install dependencies
 uv sync
 
 # Run migrations

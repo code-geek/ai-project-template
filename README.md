@@ -12,6 +12,8 @@ This template provides a modern, production-ready foundation for building full-s
 - **📚 Well-Documented**: Comprehensive docs and inline guidance for easy customization
 - **🧪 Testing Built-in**: Pytest for backend, Playwright for E2E, with example tests
 - **🎨 Beautiful UI**: Tailwind CSS + shadcn/ui components pre-configured
+- **🔧 Code Quality**: Pre-commit hooks, Ruff linting, mypy type checking
+- **⚡ Fast Tooling**: Uses uv for 10-100x faster Python package management
 
 ## 🚀 Quick Start
 
