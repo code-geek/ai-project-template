@@ -1,3 +1,5 @@
+"""Django settings for the project."""
+
 from pathlib import Path
 
 import dj_database_url

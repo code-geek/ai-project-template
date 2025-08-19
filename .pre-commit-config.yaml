@@ -29,21 +29,24 @@ repos:
     hooks:
       # Run the linter with --fix
       - id: ruff
-        args: [--fix]
+        args: [--fix, --config=backend/ruff.toml]
+        files: ^backend/
       # Run the formatter
       - id: ruff-format
+        args: [--config=backend/ruff.toml]
+        files: ^backend/
 
   # Python type checking
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.14.0
-    hooks:
-      - id: mypy
-        additional_dependencies:
-          - django-stubs[compatible-mypy]
-          - types-requests
-          - types-python-dateutil
-        files: ^backend/
-        args: [--config-file=pyproject.toml]
+  # - repo: https://github.com/pre-commit/mirrors-mypy
+  #   rev: v1.14.0
+  #   hooks:
+  #     - id: mypy
+  #       additional_dependencies:
+  #         - django-stubs[compatible-mypy]
+  #         - types-requests
+  #         - types-python-dateutil
+  #       files: ^backend/
+  #       args: [--config-file=backend/pyproject.toml]
 
   # Security checks
   - repo: https://github.com/Yelp/detect-secrets

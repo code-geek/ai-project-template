@@ -1,18 +1,22 @@
-"""
-Shared pytest fixtures for all tests.
-"""
+"""Shared pytest fixtures for all tests."""
+# ruff: noqa: S106, ANN401
+
+from typing import TYPE_CHECKING, Any
 
 import pytest
 from django.contrib.auth import get_user_model
 from ninja.testing import TestClient
 
-from apps.users.models import User as UserType
+if TYPE_CHECKING:
+    from apps.users.models import User as UserType
+else:
+    UserType = None
 
 User = get_user_model()
 
 
 @pytest.fixture
-def api_client():
+def api_client() -> TestClient:
     """Create a test client for API testing."""
     from config.api_config import api
 
@@ -20,7 +24,7 @@ def api_client():
 
 
 @pytest.fixture
-def user(db) -> UserType:  # noqa: ARG001
+def user(db: Any) -> UserType:
     """Create a test user."""
     return User.objects.create_user(  # type: ignore[attr-defined]
         email="test@example.com",
@@ -31,7 +35,7 @@ def user(db) -> UserType:  # noqa: ARG001
 
 
 @pytest.fixture
-def auth_client(api_client, user):
+def auth_client(api_client: TestClient, user: "UserType") -> TestClient:
     """Create an authenticated test client."""
     # In a real app, you'd implement JWT token generation here
     # For now, we'll use a simple session auth
@@ -40,7 +44,7 @@ def auth_client(api_client, user):
 
 
 @pytest.fixture
-def admin_user(db) -> UserType:  # noqa: ARG001
+def admin_user(db: Any) -> UserType:
     """Create an admin user."""
     return User.objects.create_superuser(  # type: ignore[attr-defined]
         email="admin@example.com",
