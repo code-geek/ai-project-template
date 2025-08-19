@@ -1,8 +1,8 @@
 """Main API configuration for Django Ninja."""
 
+from django.http import HttpRequest, HttpResponse
 from ninja import NinjaAPI
 from ninja.security import HttpBearer
-from ninja.types import HttpRequest, HttpResponse
 
 from apps.core.api import router as core_router
 

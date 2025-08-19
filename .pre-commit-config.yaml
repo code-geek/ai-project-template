@@ -45,6 +45,17 @@ repos:
   #         - django-stubs[compatible-mypy]
   #         - types-requests
   #         - types-python-dateutil
+  #         - django
+  #         - django-ninja
+  #         - psycopg
+  #         - python-decouple
+  #         - django-cors-headers
+  #         - redis
+  #         - celery
+  #         - pydantic
+  #         - pydantic-settings
+  #         - dj-database-url
+  #         - whitenoise
   #       files: ^backend/
   #       args: [--config-file=backend/pyproject.toml]
 

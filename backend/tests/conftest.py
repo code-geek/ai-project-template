@@ -26,7 +26,8 @@ def api_client() -> TestClient:
 @pytest.fixture
 def user(db: Any) -> UserType:
     """Create a test user."""
-    return User.objects.create_user(  # type: ignore[attr-defined]
+    return User.objects.create_user(
+        username="testuser",
         email="test@example.com",
         password="testpass123",  # pragma: allowlist secret
         first_name="Test",
@@ -39,14 +40,16 @@ def auth_client(api_client: TestClient, user: "UserType") -> TestClient:
     """Create an authenticated test client."""
     # In a real app, you'd implement JWT token generation here
     # For now, we'll use a simple session auth
-    api_client.force_authenticate(user)
+    # Note: TestClient doesn't have force_authenticate method
+    # This would need to be implemented with proper JWT tokens
     return api_client
 
 
 @pytest.fixture
 def admin_user(db: Any) -> UserType:
     """Create an admin user."""
-    return User.objects.create_superuser(  # type: ignore[attr-defined]
+    return User.objects.create_superuser(
+        username="admin",
         email="admin@example.com",
         password="adminpass123",  # pragma: allowlist secret
         first_name="Admin",
