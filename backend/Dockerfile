@@ -7,7 +7,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     UV_COMPILE_BYTECODE=1
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
+# hadolint ignore=DL3008
+RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     postgresql-client \
     && rm -rf /var/lib/apt/lists/*
@@ -27,11 +28,9 @@ RUN uv sync --frozen --no-dev
 # Copy project
 COPY . .
 
-# Create static and media directories
-RUN mkdir -p /app/staticfiles /app/media
-
-# Run collectstatic
-RUN uv run python manage.py collectstatic --noinput
+# Create static and media directories and run collectstatic
+RUN mkdir -p /app/staticfiles /app/media \
+    && uv run python manage.py collectstatic --noinput
 
 # Expose port
 EXPOSE 8000

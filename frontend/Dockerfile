@@ -21,8 +21,8 @@ FROM node:20-alpine AS runner
 WORKDIR /app
 
 # Create non-root user
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
+RUN addgroup -g 1001 -S nodejs \
+    && adduser -S nextjs -u 1001
 
 # Copy built application
 COPY --from=builder /app/public ./public

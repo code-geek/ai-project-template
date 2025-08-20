@@ -36,28 +36,15 @@ repos:
         args: [--config=backend/ruff.toml]
         files: ^backend/
 
-  # Python type checking
-  # - repo: https://github.com/pre-commit/mirrors-mypy
-  #   rev: v1.14.0
-  #   hooks:
-  #     - id: mypy
-  #       additional_dependencies:
-  #         - django-stubs[compatible-mypy]
-  #         - types-requests
-  #         - types-python-dateutil
-  #         - django
-  #         - django-ninja
-  #         - psycopg
-  #         - python-decouple
-  #         - django-cors-headers
-  #         - redis
-  #         - celery
-  #         - pydantic
-  #         - pydantic-settings
-  #         - dj-database-url
-  #         - whitenoise
-  #       files: ^backend/
-  #       args: [--config-file=backend/pyproject.toml]
+  # Python type checking - run from backend directory
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        entry: bash -c 'cd backend && uv run mypy .'
+        language: system
+        files: ^backend/.*\.py$
+        pass_filenames: false
 
   # Security checks
   - repo: https://github.com/Yelp/detect-secrets
